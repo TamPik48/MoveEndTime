@@ -1,67 +1,266 @@
-const calculateBtn = document.getElementById("calculateBtn");
-const startTimeInput = document.getElementById("startTime");
-const movieDurationInput = document.getElementById("movieDuration");
-const adDurationInput = document.getElementById("adDuration");
-const endTimeResult = document.getElementById("endTimeResult");
-const totalDurationResult = document.getElementById("totalDurationResult");
-
-function calculateMovieEndTime() {
-  const startTime = startTimeInput.value;
-  const movieDuration = Number(movieDurationInput.value);
-  const adDuration = Number(adDurationInput.value);
-
-  if (startTime === "") {
-    alert("กรุณาเลือกเวลารอบหนังเริ่มฉาย");
-    startTimeInput.focus();
-    return;
-  }
-
-  if (!Number.isFinite(movieDuration) || movieDuration <= 0) {
-    alert("กรุณากรอกระยะเวลาหนังเป็นจำนวนมากกว่า 0 นาที");
-    movieDurationInput.focus();
-    return;
-  }
-
-  if (!Number.isFinite(adDuration) || adDuration < 0) {
-    alert("กรุณากรอกเวลาโฆษณาเป็นจำนวน 0 นาทีขึ้นไป");
-    adDurationInput.focus();
-    return;
-  }
-
-  const timeParts = startTime.split(":");
-  const startHours = Number(timeParts[0]);
-  const startMinutes = Number(timeParts[1]);
-
-  const startTotalMinutes = (startHours * 60) + startMinutes;
-  const totalDuration = movieDuration + adDuration;
-  const endTotalMinutes = startTotalMinutes + totalDuration;
-
-  const endHours = Math.floor(endTotalMinutes / 60) % 24;
-  const endMinutes = endTotalMinutes % 60;
-
-  const formattedHours = String(endHours).padStart(2, "0");
-  const formattedMinutes = String(endMinutes).padStart(2, "0");
-
-  endTimeResult.textContent = `${formattedHours}:${formattedMinutes} น.`;
-
-  totalDurationResult.textContent =
-    `เวลาเริ่ม ${startTime} น. + หนัง ${movieDuration} นาที ` +
-    `+ โฆษณา ${adDuration} นาที = รวม ${totalDuration} นาที`;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-calculateBtn.addEventListener("click", calculateMovieEndTime);
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
 
-startTimeInput.addEventListener("change", calculateMovieEndTime);
-movieDurationInput.addEventListener("input", function () {
-  if (movieDurationInput.value !== "") {
-    calculateMovieEndTime();
+body {
+  min-height: 100vh;
+  padding: 24px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow-x: hidden;
+
+  font-family: Arial, Tahoma, sans-serif;
+
+  background: linear-gradient(
+    135deg,
+    #4f46e5,
+    #7c3aed
+  );
+}
+
+.container {
+  width: min(100%, 540px);
+  max-width: 540px;
+
+  padding: 32px;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.22);
+}
+
+h1 {
+  color: #312e81;
+  text-align: center;
+
+  font-size: 30px;
+
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #666666;
+
+  text-align: center;
+
+  line-height: 1.5;
+
+  margin-bottom: 28px;
+}
+
+.form-group {
+  width: 100%;
+  min-width: 0;
+
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+
+  color: #222222;
+
+  font-weight: bold;
+
+  margin-bottom: 8px;
+}
+
+input {
+  display: block;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  height: 52px;
+
+  padding: 13px 14px;
+
+  border: 2px solid #d1d5db;
+
+  border-radius: 10px;
+
+  color: #111827;
+  background: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 17px;
+  line-height: 1.2;
+
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #4f46e5;
+
+  outline: none;
+
+  box-shadow:
+    0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+input[type="time"] {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  padding-right: 14px;
+
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type="time"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+input[type="time"]::-webkit-datetime-edit {
+  padding: 0;
+}
+
+button {
+  display: block;
+
+  width: 100%;
+  max-width: 100%;
+
+  margin-top: 8px;
+
+  padding: 15px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  color: #ffffff;
+
+  background: #4f46e5;
+
+  font-family: inherit;
+
+  font-size: 18px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s,
+    transform 0.2s;
+}
+
+button:hover {
+  background: #3730a3;
+
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.result-box {
+  margin-top: 28px;
+
+  padding: 22px;
+
+  border-left: 6px solid #4f46e5;
+
+  border-radius: 12px;
+
+  background: #eef2ff;
+
+  text-align: center;
+}
+
+.result-box h2 {
+  color: #312e81;
+
+  margin-bottom: 14px;
+}
+
+.result-label {
+  color: #4b5563;
+
+  font-size: 16px;
+}
+
+.end-time {
+  margin: 8px 0 14px;
+
+  color: #1d4ed8;
+
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.total-time {
+  color: #374151;
+
+  line-height: 1.6;
+}
+
+.note {
+  margin-top: 20px;
+
+  padding: 18px;
+
+  border-left: 6px solid #f59e0b;
+
+  border-radius: 12px;
+
+  background: #fffbeb;
+}
+
+.note h3 {
+  color: #92400e;
+
+  margin-bottom: 8px;
+}
+
+.note p {
+  color: #78350f;
+
+  line-height: 1.6;
+}
+
+@media (max-width: 480px) {
+
+  body {
+    padding: 12px;
+
+    align-items: flex-start;
   }
-});
 
-adDurationInput.addEventListener("input", function () {
-  if (adDurationInput.value !== "") {
-    calculateMovieEndTime();
+  .container {
+    width: 100%;
+
+    padding: 24px 18px;
+
+    border-radius: 16px;
   }
-});
 
-calculateMovieEndTime();
+  h1 {
+    font-size: 25px;
+  }
+
+  .end-time {
+    font-size: 30px;
+  }
+}
