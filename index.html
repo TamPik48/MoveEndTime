@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>คำนวณเวลาหนังจบ</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="container">
+    <h1>🎬 คำนวณเวลาหนังจบ</h1>
+    <p class="subtitle">
+      กรอกเวลาเริ่มฉาย ระยะเวลาหนัง และเวลาโฆษณา
+    </p>
+
+    <div class="form-group">
+      <label for="startTime">เวลารอบหนังเริ่มฉาย</label>
+      <input type="time" id="startTime" value="15:00">
+    </div>
+
+    <div class="form-group">
+      <label for="movieDuration">ระยะเวลาหนัง (นาที)</label>
+      <input
+        type="number"
+        id="movieDuration"
+        placeholder="ตัวอย่าง 120"
+        min="1"
+        value="90"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="adDuration">เวลาโฆษณา (นาที)</label>
+      <input
+        type="number"
+        id="adDuration"
+        min="0"
+        value="30"
+      >
+    </div>
+
+    <button type="button" id="calculateBtn">
+      คำนวณเวลาหนังจบ
+    </button>
+
+    <section class="result-box" aria-live="polite">
+      <h2>📌 ผลลัพธ์</h2>
+
+      <p class="result-label">หนังจะจบประมาณเวลา</p>
+      <p class="end-time" id="endTimeResult">--:-- น.</p>
+
+      <p class="total-time" id="totalDurationResult">
+        กรุณากรอกข้อมูล แล้วกดปุ่มคำนวณ
+      </p>
+    </section>
+
+    <section class="note">
+      <h3>⚠️ หมายเหตุ</h3>
+      <p>
+        เวลาที่คำนวณนี้รวมเวลาโฆษณาแล้ว โดยตั้งค่าเริ่มต้นเป็น 30 นาที
+        แต่เวลาโฆษณาจริงอาจเร็วหรือช้ากว่าเวลาที่คำนวณได้
+      </p>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
